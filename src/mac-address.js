@@ -1,4 +1,4 @@
-const { NotImplementedError } = require('../extensions/index.js');
+// const { NotImplementedError } = require('../extensions/index.js');
 
 /**
  * The MAC-48 address is six groups of two hexadecimal digits (0 to 9 or A to F),

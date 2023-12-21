@@ -23,7 +23,6 @@
   return maxNumber;
 }
 
-
 module.exports = {
   deleteDigit
 };

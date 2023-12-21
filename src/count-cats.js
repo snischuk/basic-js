@@ -28,7 +28,6 @@
   return count;
 }
 
-
 module.exports = {
   countCats
 };
