@@ -1,4 +1,4 @@
-const { NotImplementedError } = require('../extensions/index.js');
+// const { NotImplementedError } = require('../extensions/index.js');
 
 /**
  * Implement class VigenereCipheringMachine that allows us to create
@@ -20,13 +20,48 @@ const { NotImplementedError } = require('../extensions/index.js');
  * 
  */
 class VigenereCipheringMachine {
-  encrypt() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+  constructor(isDirect = true) {
+    this.isDirect = isDirect;
+    this.alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   }
-  decrypt() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+
+  checkArguments(...args) {
+    if (args.some(arg => typeof arg !== 'string' || !arg.trim())) {
+      throw new Error('Incorrect arguments!');
+    }
+  }
+
+  transform(message, key, encrypt = true) {
+    this.checkArguments(message, key);
+    message = message.toUpperCase();
+    key = key.toUpperCase();
+    const result = [];
+    let keyIndex = 0;
+
+    for (let i = 0; i < message.length; i++) {
+      const messageChar = message[i];
+      const isAlphabetic = /[A-Z]/.test(messageChar);
+
+      if (isAlphabetic) {
+        const keyChar = key[keyIndex % key.length];
+        const keyShift = encrypt ? this.alphabet.indexOf(keyChar) : -this.alphabet.indexOf(keyChar);
+        const newIndex = (this.alphabet.indexOf(messageChar) + keyShift + this.alphabet.length) % this.alphabet.length;
+        result.push(this.alphabet[newIndex]);
+        keyIndex++;
+      } else {
+        result.push(messageChar);
+      }
+    }
+
+    return this.isDirect ? result.join('') : result.reverse().join('');
+  }
+
+  encrypt(message, key) {
+    return this.transform(message, key, true);
+  }
+
+  decrypt(encryptedMessage, key) {
+    return this.transform(encryptedMessage, key, false);
   }
 }
 
